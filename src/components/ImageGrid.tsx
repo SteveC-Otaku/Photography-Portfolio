@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Lightbox from './Lightbox';
 
 type ImageItem = { src: string; alt: string };
@@ -8,10 +8,38 @@ type ImageItem = { src: string; alt: string };
 type ImageGridProps = {
   items: ImageItem[];
   masonry?: boolean;
+  progressive?: boolean;
+  chunkSize?: number;
 };
 
-export default function ImageGrid({ items, masonry = true }: ImageGridProps) {
+export default function ImageGrid({ items, masonry = true, progressive = false, chunkSize = 12 }: ImageGridProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [visibleCount, setVisibleCount] = useState<number>(progressive ? Math.min(chunkSize, items.length) : items.length);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!progressive) return;
+    setVisibleCount(Math.min(chunkSize, items.length));
+  }, [items, progressive, chunkSize]);
+
+  useEffect(() => {
+    if (!progressive) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisibleCount((v) => Math.min(v + chunkSize, items.length));
+          }
+        });
+      },
+      { rootMargin: '200px' }
+    );
+    const el = loadMoreRef.current;
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, [progressive, chunkSize, items.length]);
+
+  const visibleItems = progressive ? items.slice(0, visibleCount) : items;
 
   return (
     <>
@@ -22,7 +50,7 @@ export default function ImageGrid({ items, masonry = true }: ImageGridProps) {
             : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6'
         }
       >
-        {items.map((item, i) => (
+        {visibleItems.map((item, i) => (
           <button
             type="button"
             key={item.src + i}
@@ -53,13 +81,14 @@ export default function ImageGrid({ items, masonry = true }: ImageGridProps) {
           </button>
         ))}
       </div>
+      {progressive && visibleCount < items.length && <div ref={loadMoreRef} className="h-10" />}
       {lightboxIndex !== null && (
         <Lightbox
-          images={items.map((i) => ({ src: i.src, alt: i.alt }))}
+          images={visibleItems.map((i) => ({ src: i.src, alt: i.alt }))}
           currentIndex={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
-          onPrev={() => setLightboxIndex((prev) => (prev === 0 ? items.length - 1 : (prev ?? 0) - 1))}
-          onNext={() => setLightboxIndex((prev) => (prev === items.length - 1 ? 0 : (prev ?? 0) + 1))}
+          onPrev={() => setLightboxIndex((prev) => (prev === 0 ? visibleItems.length - 1 : (prev ?? 0) - 1))}
+          onNext={() => setLightboxIndex((prev) => (prev === visibleItems.length - 1 ? 0 : (prev ?? 0) + 1))}
         />
       )}
     </>

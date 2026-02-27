@@ -16,7 +16,7 @@ export default function CinematicFramesPage() {
         <p className="text-fg-muted text-base max-w-2xl mb-12">
           捕捉镜头之外的构图与情绪，用静态画面延续电影语言。
         </p>
-        <ImageGrid items={items} masonry={false} />
+        <ImageGrid items={items} masonry={false} progressive chunkSize={12} />
       </div>
     </div>
   );
