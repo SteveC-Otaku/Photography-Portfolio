@@ -12,7 +12,7 @@ export default function SelectedWorksPage() {
     <div className="pt-24 md:pt-28 pb-16 md:pb-24 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">精选作品</h1>
-        <ImageGrid items={items} masonry={false} progressive chunkSize={12} />
+        <ImageGrid items={items} progressive chunkSize={12} />
       </div>
     </div>
   );

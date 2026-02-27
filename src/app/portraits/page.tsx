@@ -13,7 +13,7 @@ export default function PortraitsPage() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight mb-2">人像</h1>
         <p className="text-fg-muted text-lg mb-12">人像摄影精选</p>
-        <ImageGrid items={items} masonry={false} progressive chunkSize={12} />
+        <ImageGrid items={items} progressive chunkSize={12} />
       </div>
     </div>
   );
