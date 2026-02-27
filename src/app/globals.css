@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0B0C0F;
+  --bg-secondary: #14161A;
+  --fg: #F3F6F9;
+  --fg-muted: #A7B0BF;
+  --accent: #C9A86A;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-bg text-fg antialiased;
+}
+
+/* 滚动淡入 */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.animate-on-scroll.visible {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.link-underline {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.2s ease-out;
+}
+.link-underline:hover {
+  background-size: 100% 2px;
+}
+.link-underline-active {
+  background-size: 100% 2px;
+}

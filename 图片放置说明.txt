@@ -1,0 +1,92 @@
+========================================
+  Cheng Chen 摄影作品集 — 图片放置说明
+========================================
+
+一、项目里图片要放哪个文件夹
+----------------------------------------
+
+所有图片都放在项目根目录下的：
+
+  public/images/
+
+根目录下可放整站共用的图（如 Hero Banner）；再按类型分子文件夹：
+
+  public/images/              → Hero Banner.png 等单张
+  public/images/homepage/     → 首页精选 6 张
+  public/images/selected/     → 精选作品
+  public/images/cinematic/    → 电影帧
+  public/images/landscape/    → 风景
+  public/images/portraits/    → 人像
+
+可用 JPG/PNG 放入，再在项目根目录执行：npm run convert
+会将 public/images 下所有 jpg/png 等转为同名的 .webp（同目录），站内已统一用 .webp 引用。
+
+
+二、各页面用哪些图、放在哪
+----------------------------------------
+
+【首页】/
+  · Hero 顶部大图（全屏背景）
+    文件：public/images/Hero Banner.png
+    说明：整页背景图，上有半透明遮罩与标题「Cheng Chen / 用摄影讲述视觉故事」。
+
+  · 精选作品区块（页面中下 3 列网格）
+    用图：homepage 文件夹中的 6 张（01～06，转成 webp 后为 01.webp～06.webp）
+    文件夹：public/images/homepage/
+    说明：顺序即展示顺序，01 左上 → 06 右中。
+
+【精选作品页】/selected-works
+  位置：整页网格，点击进全屏灯箱
+  文件夹：public/images/selected/
+  文件名：01.webp ～ 20.webp（可先放 01.jpg 等，再 npm run convert）
+
+【电影帧页】/cinematic-frames
+  文件夹：public/images/cinematic/
+  文件名：01.webp ～ 10.webp
+
+【风景页】/landscape
+  文件夹：public/images/landscape/
+  文件名：01.webp ～ 10.webp（数量可在 src/data/images.ts 的 landscape 数组里增删）
+
+【人像页】/portraits
+  文件夹：public/images/portraits/
+  文件名：01.webp ～ 08.webp
+
+【关于页】/about、【联系页】/contact
+  无图片。
+
+
+三、文件夹结构一览（复制用）
+----------------------------------------
+
+  d:\NoCoding\Photography Portfolio\
+  └── public\
+      └── images\
+          ├── Hero Banner.png     ← 首页顶部 Hero 背景
+          ├── homepage\          ← 首页精选 6 张（01～06）
+          ├── selected\          ← 精选作品 20 张
+          ├── cinematic\         ← 电影帧 10 张
+          ├── landscape\         ← 风景
+          ├── portraits\         ← 人像 8 张
+          └── （其他子文件夹不会参与转换脚本）
+
+
+四、转 WebP 脚本
+----------------------------------------
+
+在项目根目录执行：
+
+  npm run convert
+
+会递归处理 public/images 下所有 .jpg / .jpeg / .png / .bmp / .tiff：
+- 子文件夹（homepage、selected、cinematic、landscape、portraits 等）：按文件名排序后，依次输出 01.webp、02.webp、03.webp…，与代码中引用名称一致。
+- 根目录 public/images/：保留原文件名，仅扩展名改为 .webp（如 Hero Banner.png → Hero Banner.webp）。
+质量 80。若某文件无法读取会跳过并打日志。
+
+
+五、增删或改图片时要注意什么
+----------------------------------------
+
+- 增删数量或改文件名：改 src/data/images.ts 里对应数组（homepageImages、selectedWorks、cinematicFrames、landscape、portraits）的 src 和 alt。
+- 首页精选 6 张来自 homepage 文件夹，与 selected 无关；风景数量改 landscape 数组即可。
+- 建议源图长边 2000px，转成 webp 后单张 600KB 以内更利于加载。

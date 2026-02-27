@@ -1,0 +1,14 @@
+# Cheng Chen 摄影作品集 — 设计系统 (UI/UX Pro Max 风格)
+
+## 色彩
+- 背景: #000 / #111
+- 正文: #fff | 次要: #888 | 点缀: #444
+
+## 字体
+- Inter (sans-serif)，大标题、充足留白
+
+## 动效
+- 仅轻微 fade-in on scroll、平滑过渡，无 parallax
+
+## 技术
+- Next.js 静态导出、Tailwind、图片 WebP + 懒加载、Lightbox 键盘导航
